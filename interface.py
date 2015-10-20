@@ -35,6 +35,9 @@ class RobotInterface():
             time.sleep(0.001)
         return None
 
+    def stop(self):
+        vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot_wait)
+
     def setup(self):
         if self.clientID != -1:
             errorCode, handles, intData, floatData, array = vrep.simxGetObjectGroupData(self.clientID,

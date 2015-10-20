@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Follower.iml" filepath="$PROJECT_DIR$/.idea/Follower.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../qr-code-finder/.idea/cvstuff.iml" filepath="$PROJECT_DIR$/../qr-code-finder/.idea/cvstuff.iml" />
     </modules>
   </component>
 </project>
