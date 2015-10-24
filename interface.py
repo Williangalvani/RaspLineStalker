@@ -7,6 +7,7 @@ class RobotInterface():
     def __init__(self):
         vrep.simxFinish(-1)  # just in case, close all opened connections
         self.clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+        vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot)
         vrep.simxStartSimulation(self.clientID,vrep.simx_opmode_oneshot)
 
         vrep.simxSynchronous(self.clientID, False)
@@ -22,17 +23,18 @@ class RobotInterface():
         vrep.simxSynchronousTrigger(self.clientID)
 
     def set_right_speed(self, speed):
-        vrep.simxSetJointTargetVelocity(self.clientID, self.right_wheel, speed, vrep.simx_opmode_oneshot_wait)
+        vrep.simxSetJointTargetVelocity(self.clientID, self.right_wheel, speed, vrep.simx_opmode_oneshot)
 
     def set_left_speed(self, speed):
-        vrep.simxSetJointTargetVelocity(self.clientID, self.left_wheel, speed, vrep.simx_opmode_oneshot_wait)
+        vrep.simxSetJointTargetVelocity(self.clientID, self.left_wheel, speed, vrep.simx_opmode_oneshot)
 
     def read_camera(self):
         data = vrep.simxGetVisionSensorImage(self.clientID,self.camera,1,vrep.simx_opmode_buffer)
         if data[0] == vrep.simx_return_ok :
             return data
         else:
-            time.sleep(0.001)
+            pass
+            #time.sleep(0.001)
         return None
 
     def stop(self):

@@ -4,6 +4,7 @@ from interface import RobotInterface
 import time
 import cv2
 
+import math
 from view.tracker import Tracker
 
 class Controller:
@@ -15,32 +16,34 @@ class Controller:
         self.interface.set_left_speed(0.1)
         self.interface.set_right_speed(0.1)
 
-
-
-
         while True:
-            ok, ways, intersections,com, self.colored_tracking_image = self.tracker.process_image()
-            if ok:
-                self.control(com)
-                largeimg = cv2.resize(self.colored_tracking_image,(0,0),fx=3,fy=3)
-                cv2.imshow("target", largeimg)
+            start = time.time()
+            self.tracker.process_image()
 
+            self.control()
+            largeimg = cv2.resize(self.tracker.colored, (0, 0), fx=3, fy=3)
+            cv2.imshow("target", largeimg)
             ch = cv2.waitKey(5) & 0xFF
             if ch == 27:
                 break
-            time.sleep(0.05)
+            print "took", time.time() - start
 
         self.interface.stop()
         cv2.destroyAllWindows()
 
-    def control(self,center_of_mass):
-        try:
-            x = int(center_of_mass[1])-5
-            print x
-        except:
-            return
-        self.interface.set_right_speed(0.6+x*0.04)
+    def control(self):
+        points = self.tracker.points
+        #center = sum([point[0] for point in points if point is not None])/len(points)
 
-        self.interface.set_left_speed(0.6+x*-0.04)
+        try:
+            valid = [point for point in points if point is not None]
+            erro = 64-valid[-1][0]
+            #print erro
+        except:
+            erro = 0
+
+        self.interface.set_right_speed(2+erro*-0.015)
+
+        self.interface.set_left_speed(2+erro*0.015)
 
 Controller()
