@@ -6,16 +6,21 @@ class RobotInterface():
 
     def __init__(self):
         vrep.simxFinish(-1)  # just in case, close all opened connections
-        self.clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
-        vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot)
-        vrep.simxStartSimulation(self.clientID,vrep.simx_opmode_oneshot)
+        self.clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5) # tenta conectar no simulador, se salva o clientID
 
+        # paramos a simulacao, se estiver em andamento, e comecamos denovo
+        vrep.simxStopSimulation(self.clientID, vrep.simx_opmode_oneshot)
+        vrep.simxStartSimulation(self.clientID, vrep.simx_opmode_oneshot)
+
+        # modo da API, como eh False, esta no modo assincrono(os ticks da simulacao rodam em velocidade independente)
         vrep.simxSynchronous(self.clientID, False)
         print "connected with id ", self.clientID
+
 
         self.left_wheel = None
         self.right_wheel = None
         self.camera = None
+
         self.setup()
         self.lastimageAcquisitionTime = 0
 
@@ -32,14 +37,10 @@ class RobotInterface():
         data = vrep.simxGetVisionSensorImage(self.clientID,self.camera,1,vrep.simx_opmode_buffer)
         if data[0] == vrep.simx_return_ok :
             return data
-        else:
-            pass
-            #time.sleep(0.001)
         return None
 
     def stop(self):
         vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot_wait)
-
     def setup(self):
         if self.clientID != -1:
             errorCode, handles, intData, floatData, array = vrep.simxGetObjectGroupData(self.clientID,
