@@ -1,6 +1,7 @@
 __author__ = 'will'
 from vreptest import vrep
-import time
+import numpy as np
+import cv2
 
 class RobotInterface():
 
@@ -33,11 +34,22 @@ class RobotInterface():
     def set_left_speed(self, speed):
         vrep.simxSetJointTargetVelocity(self.clientID, self.left_wheel, speed, vrep.simx_opmode_oneshot)
 
-    def read_camera(self):
+    def _read_camera(self):
         data = vrep.simxGetVisionSensorImage(self.clientID,self.camera,1,vrep.simx_opmode_buffer)
         if data[0] == vrep.simx_return_ok :
             return data
         return None
+
+    def get_image_from_camera(self):
+        """
+        Loads image from camera.
+        :return:
+        """
+        img = None
+        while not img:  img = self._read_camera()
+
+        img = np.array(img[2], dtype='uint8').reshape(128, 128)
+        return img
 
     def stop(self):
         vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot_wait)
@@ -50,6 +62,6 @@ class RobotInterface():
             data = dict(zip(array, handles))
 
             self.camera = [value for key, value in data.iteritems() if "Vision" in key][0]
-            self.left_wheel = [value for key, value in data.iteritems() if "DynamicLeftJoint" in key][0]
-            self.right_wheel = [value for key, value in data.iteritems() if "DynamicRightJoint" in key][0]
+            self.left_wheel = [value for key, value in data.iteritems() if "eftJoint" in key][0]
+            self.right_wheel = [value for key, value in data.iteritems() if "rightJoint" in key][0]
             vrep.simxGetVisionSensorImage(self.clientID,self.camera,1,vrep.simx_opmode_streaming)
