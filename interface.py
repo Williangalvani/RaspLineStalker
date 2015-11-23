@@ -62,6 +62,6 @@ class RobotInterface():
             data = dict(zip(array, handles))
 
             self.camera = [value for key, value in data.iteritems() if "Vision" in key][0]
-            self.left_wheel = [value for key, value in data.iteritems() if "eftJoint" in key][0]
-            self.right_wheel = [value for key, value in data.iteritems() if "rightJoint" in key][0]
-            vrep.simxGetVisionSensorImage(self.clientID,self.camera,1,vrep.simx_opmode_streaming)
+            self.left_wheel = [value for key, value in data.iteritems() if "cLeftJoint" in key][0]
+            self.right_wheel = [value for key, value in data.iteritems() if "cRightJoint" in key][0]
+            vrep.simxGetVisionSensorImage(self.clientID, self.camera, 1, vrep.simx_opmode_streaming)

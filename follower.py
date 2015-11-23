@@ -3,6 +3,7 @@ __author__ = 'will'
 from interface import RobotInterface
 import time
 import cv2
+from input.keylistener import KeyListener
 
 
 class Controller:
@@ -10,8 +11,10 @@ class Controller:
     def __init__(self):
         self.interface = RobotInterface()
 
-        self.interface.set_left_speed(0.1)
-        self.interface.set_right_speed(0.1)
+        self.interface.set_left_speed(0)
+        self.interface.set_right_speed(0)
+
+        self.listener = KeyListener()
 
         while True:
             start = time.time()
@@ -39,8 +42,23 @@ class Controller:
         Calcula o controle das rodas
         :return:
         """
-        self.interface.set_right_speed(0.025)
 
-        self.interface.set_left_speed(0.025)
+
+        velocidade = 0
+        direcao = 0
+
+        if self.listener.get_key(97):
+            direcao = -1
+        elif self.listener.get_key(100):
+            direcao = 1
+        if self.listener.get_key(119):
+            velocidade = 1
+        elif self.listener.get_key(115):
+            velocidade = -1
+
+        print direcao, velocidade
+        self.interface.set_right_speed(0.8*velocidade + direcao*0.2)
+
+        self.interface.set_left_speed(0.8*velocidade - direcao*0.2)
 
 Controller()
