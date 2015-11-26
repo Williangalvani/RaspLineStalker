@@ -56,7 +56,7 @@ for i in trY:
 outputs = 3
 
 X = tf.placeholder("float", [None, 784])
-Y = tf.placeholder("float", [None, outputs  ])
+Y = tf.placeholder("float", [None, outputs])
 
 w_h = init_weights([784, 625])
 w_h2 = init_weights([625, 625])
@@ -83,6 +83,6 @@ for i in range(100):
                                                      p_keep_input: 1.0,
                                                      p_keep_hidden: 1.0}))
 
-print list(sess.run(predict_op, feed_dict={X: teX, Y: teY, p_keep_input: 1.0, p_keep_hidden: 1.0}))
+print list(sess.run(predict_op, feed_dict={X: teX, Y: teY, p_keep_input: 1.0, p_kee1p_hidden: 1.0}))
 #for i in range(1000):
 #    print sess.run(predict_op, feed_dict={X: teX[1:1+1], Y: teY, p_keep_input: 1.0, p_keep_hidden: 1.0})
