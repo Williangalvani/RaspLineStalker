@@ -56,7 +56,7 @@ for i in trY:
 outputs = 3
 
 X = tf.placeholder("float", [None, 784])
-Y = tf.placeholder("float", [None, outputs])
+Y = tf.placeholder("float", [None, outputs  ])
 
 w_h = init_weights([784, 625])
 w_h2 = init_weights([625, 625])
