@@ -8,7 +8,6 @@ class KeyListener():
     keyMap = {}
 
     def pressed(self, event ):
-        print event.Ascii
         self.keyMap[event.Ascii] = True
 
     def released(self, event):

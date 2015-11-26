@@ -48,7 +48,7 @@ class RobotInterface():
         img = None
         while not img:  img = self._read_camera()
 
-        img = np.array(img[2], dtype='uint8').reshape(128, 128)
+        img = np.array(img[2], dtype='uint8').reshape(28,28)
         return img
 
     def stop(self):

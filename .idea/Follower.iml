@@ -5,5 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="cvstuff" />
+    <orderEntry type="module" module-name="tensorflowtests" />
   </component>
 </module>

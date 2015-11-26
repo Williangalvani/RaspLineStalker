@@ -4,6 +4,11 @@ from interface import RobotInterface
 import time
 import cv2
 from input.keylistener import KeyListener
+import pickle
+
+interval = 1
+
+saved_data = []
 
 
 class Controller:
@@ -15,24 +20,30 @@ class Controller:
         self.interface.set_right_speed(0)
 
         self.listener = KeyListener()
+        next = time.time()
 
+        self.velocidade = 0
+        self.direcao = 0
         while True:
-            start = time.time()
+
 
             ### esta funcao, do "tracker" faz o processamento da imagem
             img = self.interface.get_image_from_camera()
-
+            if time.time() > next:
+                saved_data.append((self.direcao,self.velocidade,img))
+                next = time.time()+0.03
+                print len(saved_data)
             ### esta funcao faz o controle do robo
             self.control()
 
             ## estas duas linhas servem apenas para mostrar uma das imagens da tela
-            cv2.imshow("target", img)
+            cv2.imshow("target",  cv2.resize(img, (280, 280)) )
 
             ## esta parte do codigo detecta se a barra de espaco foi pressionada, para parar a simulacao
             ch = cv2.waitKey(5) & 0xFF
             if ch == 27:
+                pickle.dump( saved_data, open( "trainingdata.p", "wb" ) )
                 break
-            print "took", time.time() - start
 
         self.interface.stop()
         cv2.destroyAllWindows()
@@ -44,21 +55,22 @@ class Controller:
         """
 
 
-        velocidade = 0
-        direcao = 0
+        self.velocidade = 0
+        self.direcao = 0
 
         if self.listener.get_key(97):
-            direcao = -1
+            self.direcao = -1
         elif self.listener.get_key(100):
-            direcao = 1
+            self.direcao = 1
         if self.listener.get_key(119):
-            velocidade = 1
+            self.velocidade = 1
         elif self.listener.get_key(115):
-            velocidade = -1
+            self.velocidade = -1
 
-        print direcao, velocidade
-        self.interface.set_right_speed(0.8*velocidade + direcao*0.2)
 
-        self.interface.set_left_speed(0.8*velocidade - direcao*0.2)
+        #print direcao, velocidade
+        self.interface.set_right_speed(0.8*self.velocidade + self.direcao*0.1)
+
+        self.interface.set_left_speed(0.8*self.velocidade - self.direcao*0.1)
 
 Controller()
