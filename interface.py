@@ -3,7 +3,9 @@ from vreptest import vrep
 import numpy as np
 import cv2
 
+
 class RobotInterface():
+
 
     def __init__(self):
         vrep.simxFinish(-1)  # just in case, close all opened connections
@@ -48,7 +50,17 @@ class RobotInterface():
         img = None
         while not img:  img = self._read_camera()
 
-        img = cv2.resize(np.array(img[2], dtype='uint8').reshape((140,140)),(28,28), interpolation=cv2.INTER_AREA )
+        img = np.array(img[2], dtype='uint8').reshape((32,32))
+
+        threshold = int(np.mean(img))*0.5
+        #print threshold
+
+
+        ret, img = cv2.threshold(img.astype(np.uint8), threshold, 255, cv2.THRESH_BINARY_INV)
+
+
+        img = cv2.resize(img,(8,8), interpolation=cv2.INTER_AREA )
+
         return img
 
     def stop(self):
