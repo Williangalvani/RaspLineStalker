@@ -28,14 +28,12 @@ X_train, X_test, y_train, y_test = trX, teX, trY, teY
 
 
 # Build 2 layer fully connected DNN with 10, 10 units respecitvely.
-regressor = skflow.TensorFlowDNNRegressor(  steps=5000, hidden_units=[100,100,100], learning_rate=0.1, batch_size=1,optimizer="Adagrad")
+regressor = skflow.TensorFlowDNNRegressor(  steps=1000, hidden_units=[500,500,500,500,500], learning_rate=0.1, batch_size=1,optimizer="Adagrad")
 
-# Fit and predict.
+# Fit and predict
 regressor.fit(X_train, y_train)
 
 size = len(X_test)
-
-print size
 
 options = random.sample(xrange(size),200)
 
@@ -47,9 +45,9 @@ for option in options:
     erro = pred[0][0] - y[0][0]
     erroacumulado+= abs(erro/200.0)
     erroreto+=abs(y[0][0])/200.0
-    print "predicted: ", pred, " was: ", y, " error is ", erro, " acumulado: ", erroacumulado
+    #print "predicted: ", pred, " was: ", y, " error is ", erro, " acumulado: ", erroacumulado
 
-print erroacumulado, erroreto
+#print erroacumulado, erroreto
     #score = metrics.mean_squared_error(regressor.predict(x),y)
 
 

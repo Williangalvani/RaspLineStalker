@@ -50,7 +50,8 @@ class RobotInterface():
         img = None
         while not img:  img = self._read_camera()
 
-        img = np.array(img[2], dtype='uint8').reshape((32,32))
+        size = img[1][0]
+        img = np.array(img[2], dtype='uint8').reshape((size,size))
 
         threshold = int(np.mean(img))*0.5
         #print threshold
@@ -59,7 +60,7 @@ class RobotInterface():
         ret, img = cv2.threshold(img.astype(np.uint8), threshold, 255, cv2.THRESH_BINARY_INV)
 
 
-        img = cv2.resize(img,(8,8), interpolation=cv2.INTER_AREA )
+        img = cv2.resize(img,(16,16), interpolation=cv2.INTER_AREA )
 
         return img
 
