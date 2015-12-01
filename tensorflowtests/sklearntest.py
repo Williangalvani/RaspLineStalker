@@ -28,8 +28,8 @@ X_train, X_test, y_train, y_test = trX, teX, trY, teY
 
 
 # Build 2 layer fully connected DNN with 500, 500 units.
-regressor = skflow.TensorFlowDNNRegressor(steps=50000,
-                                          hidden_units=[500,500,500,500,500 ],
+regressor = skflow.TensorFlowDNNRegressor(steps=1000,
+                                          hidden_units=[10],
                                           learning_rate=0.05,
                                           batch_size=1,
                                           optimizer="Adagrad")
