@@ -49,7 +49,7 @@ class Controller:
 
             if USAREDE:
                 self.direcao = tensorflowtests.sklearntest.get_velocity(img)
-                print self.direcao
+                #print self.direcao
                 time.sleep(0.001)
 
             ### esta funcao faz o controle do robo

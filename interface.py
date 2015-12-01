@@ -5,7 +5,9 @@ import cv2
 
 
 class RobotInterface():
-
+    """
+    Esta classe facilita a interface com o simulador
+    """
 
     def __init__(self):
         vrep.simxFinish(-1)  # just in case, close all opened connections
@@ -31,9 +33,19 @@ class RobotInterface():
         vrep.simxSynchronousTrigger(self.clientID)
 
     def set_right_speed(self, speed):
+        """
+        seta velocidade da roda direita
+        :param speed:
+        :return:
+        """
         vrep.simxSetJointTargetVelocity(self.clientID, self.right_wheel, speed, vrep.simx_opmode_oneshot)
 
     def set_left_speed(self, speed):
+        """
+        seta velocidade da roda esquerda
+        :param speed:
+        :return:
+        """
         vrep.simxSetJointTargetVelocity(self.clientID, self.left_wheel, speed, vrep.simx_opmode_oneshot)
 
     def _read_camera(self):
@@ -66,6 +78,7 @@ class RobotInterface():
 
     def stop(self):
         vrep.simxStopSimulation(self.clientID,vrep.simx_opmode_oneshot_wait)
+
     def setup(self):
         if self.clientID != -1:
             errorCode, handles, intData, floatData, array = vrep.simxGetObjectGroupData(self.clientID,

@@ -27,8 +27,12 @@ scaler = preprocessing.StandardScaler()
 X_train, X_test, y_train, y_test = trX, teX, trY, teY
 
 
-# Build 2 layer fully connected DNN with 10, 10 units respecitvely.
-regressor = skflow.TensorFlowDNNRegressor(  steps=1000, hidden_units=[500,500,500,500,500], learning_rate=0.1, batch_size=1,optimizer="Adagrad")
+# Build 2 layer fully connected DNN with 500, 500 units.
+regressor = skflow.TensorFlowDNNRegressor(steps=50000,
+                                          hidden_units=[500,500,500,500,500 ],
+                                          learning_rate=0.05,
+                                          batch_size=1,
+                                          optimizer="Adagrad")
 
 # Fit and predict
 regressor.fit(X_train, y_train)
@@ -58,5 +62,5 @@ def get_velocity(img):
     img = np.array([np.reshape(img,img.shape[0]**2)],dtype=np.float64)
     #img = scaler.fit_transform(img)
     ret =  regressor.predict(img)[0][0]
-    print ret
+    # print ret
     return ret
