@@ -25,7 +25,6 @@ class Node:
             print child
 
 
-
 class PreProcessor():
     trackedPoint = (0,0)
     windows_pos = (CENTERX,0+WINDOW_SIZE)
@@ -59,11 +58,9 @@ class PreProcessor():
         threshold = int(np.mean(img[h/1.5]))*0.5
         #print threshold
 
-
         ret, thresh2 = cv2.threshold(img.astype(np.uint8), threshold, 255, cv2.THRESH_BINARY_INV)
         erosed = thinning(thresh2)
         return erosed
-
 
 
     def find_start_point(self):
@@ -83,12 +80,10 @@ class PreProcessor():
                     return (middle-i, lines-linenumber-1)
 
 
-
     def find_path(self):
         start_point = self.find_start_point()
         cv2.circle(self.colored, start_point, 4, (255, 0, 0), 2)
         self.trackedPoint = start_point
-
 
 
     def process_image(self):
