@@ -13,6 +13,23 @@ A line follower attempt usin the raspberry pi camera
 
 ## Execution:
 
-to train:
+First, open "follower1.tt" on V-Rep.
 
-change on follower.py:
+###To record the training data:
+
+Change on follower.py:
+    
+        GRAVA = True
+        USAREDE = False
+
+Then run follower.py and use the camera to manually control the robot with "awsd" keys.
+
+###To train and run:
+
+
+Change on follower.py:
+    
+        GRAVA = False
+        USAREDE = True
+
+Then run follower.py and wait.
