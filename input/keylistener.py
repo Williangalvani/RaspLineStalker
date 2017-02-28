@@ -1,13 +1,12 @@
-import pyxhook
+from input import pyxhook
 
-
-class KeyListener():
+class KeyListener:
     """
     This class hooks into keyboard events, and saves the states of each key into a dictionary.
     """
     keyMap = {}
 
-    def pressed(self, event ):
+    def pressed(self, event):
         self.keyMap[event.Ascii] = True
 
     def released(self, event):
@@ -28,6 +27,7 @@ class KeyListener():
 
     def __del__(self):
         self.hookman.cancel()
+
 
 if __name__ == "__main__":
     KeyListener()

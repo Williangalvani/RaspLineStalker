@@ -1,5 +1,7 @@
 # RaspLineStalker
-A line follower attempt usin the raspberry pi camera
+A line follower attempt usin the raspberry pi camera and tensorFlow
+
+[![Alt text for your video](http://galvanicloop.com/media/posts/post18/test1.png)](http://galvanicloop.com/media/posts/post18/test1.webm)
 
 
 ##Requirements:

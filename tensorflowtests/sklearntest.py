@@ -1,66 +1,36 @@
 __author__ = 'will'
-import random
-
-from sklearn import datasets, cross_validation, metrics
-from sklearn import preprocessing
-
-import skflow
-import pickle
-import numpy as np
-
-outputs = 1
+import numpy
+import tensorflow as tf
 
 from get_robot_data import *
 
-trX,trY = get_trainint_data(one_hot=False)
-teX,teY = get_test_data(one_hot=False)
+trX, trY = get_trainint_data(one_hot=False)
+teX, teY = get_test_data(one_hot=False)
 
-random.seed(42)
-
-# Scale data to 0 mean and unit std dev.
-scaler = preprocessing.StandardScaler()
-#trX = scaler.fit_transform(trX)
-#teX = scaler.fit_transform(teX)
-# Split dataset into train / test
-# X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y,
-#     test_size=0.2, random_state=42)
 X_train, X_test, y_train, y_test = trX, teX, trY, teY
 
+X_train = numpy.array(X_train, dtype=np.int64)
+y_train = (numpy.array(y_train, dtype=np.int64) + 1).flatten()
+X_test = numpy.array(X_test, dtype=np.int64)
+y_test = numpy.array(y_test, dtype=np.int64).flatten() + 1
 
-# Build 2 layer fully connected DNN with 500, 500 units.
-regressor = skflow.TensorFlowDNNRegressor(steps=1000,
-                                          hidden_units=[10],
-                                          learning_rate=0.05,
-                                          batch_size=1,
-                                          optimizer="Adagrad")
+feature_columns = [tf.contrib.layers.real_valued_column("", dimension=256)]
 
-# Fit and predict
-regressor.fit(X_train, y_train)
+classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+                                            hidden_units=[10],
+                                            n_classes=3,
+                                            model_dir="/tmp/iris_model")
 
-size = len(X_test)
+classifier.fit(x=X_train,
+               y=y_train,
+               steps=2000)
 
-options = random.sample(xrange(size),200)
-
-erroacumulado = 0
-erroreto = 0
-for option in options:
-    x, y = X_test[option:option+1], y_test[option:option+1]
-    pred= regressor.predict(x)
-    erro = pred[0][0] - y[0][0]
-    erroacumulado+= abs(erro/200.0)
-    erroreto+=abs(y[0][0])/200.0
-    #print "predicted: ", pred, " was: ", y, " error is ", erro, " acumulado: ", erroacumulado
-
-#print erroacumulado, erroreto
-    #score = metrics.mean_squared_error(regressor.predict(x),y)
+accuracy_score = classifier.evaluate(x=X_test,
+                                     y=y_test)["accuracy"]
+print('Accuracy: {0:f}'.format(accuracy_score))
 
 
-    #print("MSE: %f" % score)
-
-
-def get_velocity(img):
-    img = np.array([np.reshape(img,img.shape[0]**2)],dtype=np.float64)
-    #img = scaler.fit_transform(img)
-    ret =  regressor.predict(img)[0][0]
-    # print ret
+def predict_direction(img):
+    img = np.array([np.reshape(img, img.shape[0] ** 2)], dtype=np.int64)
+    ret = list(classifier.predict(img))[0] - 1
     return ret
