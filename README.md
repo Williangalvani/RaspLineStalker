@@ -4,7 +4,7 @@ A line follower attempt usin the raspberry pi camera and tensorFlow
 [![Alt text for your video](http://galvanicloop.com/media/posts/post18/test1.png)](http://galvanicloop.com/media/posts/post18/test1.webm)
 
 
-##Requirements:
+## Requirements:
 
     sudo apt-get remove python-scipy
     sudo apt-get install gfortran libblas-dev liblapack-dev
@@ -14,7 +14,7 @@ A line follower attempt usin the raspberry pi camera and tensorFlow
 
 First, open "follower1.tt" on V-Rep.
 
-###To record the training data:
+### To record the training data:
 
 Change on follower.py:
     
@@ -23,7 +23,7 @@ Change on follower.py:
 
 Then run follower.py and use the camera to manually control the robot with "awsd" keys.
 
-###To train and run:
+### To train and run:
 
 
 Change on follower.py:
